@@ -1,0 +1,490 @@
+on inventory click:
+	if name of event-inventory = "&cMilestone Menu":
+		if event-inventory = chest inventory:
+			cancel event
+			
+on inventory click:
+	if name of event-inventory = "&cMilestone Menu &8&l» &eKill Milestones":
+		if event-inventory = chest inventory:
+			cancel event
+			if event-slot = 18:
+				open {milestonemenu} to player
+				
+on inventory click:
+	if name of event-inventory = "&cMilestone Menu &8&l» &eLevel Milestones":
+		if event-inventory = chest inventory:
+			cancel event
+			if event-slot = 18:
+				open {milestonemenu} to player
+				
+on inventory click:
+	if name of event-inventory = "&cMilestone Menu &8&l» &eMining Milestones":
+		if event-inventory = chest inventory:
+			cancel event
+			if event-slot = 18:
+				open {milestonemenu} to player
+				
+on join:
+	if {milestones::kills::1::%uuid of player%} is not set:
+		set {milestones::kills::1::%uuid of player%} to false
+	if {milestones::kills::2::%uuid of player%} is not set:
+		set {milestones::kills::2::%uuid of player%} to false
+	if {milestones::kills::3::%uuid of player%} is not set:
+		set {milestones::kills::3::%uuid of player%} to false
+	if {milestones::kills::4::%uuid of player%} is not set:
+		set {milestones::kills::4::%uuid of player%} to false
+	if {milestones::kills::5::%uuid of player%} is not set:
+		set {milestones::kills::5::%uuid of player%} to false
+	if {milestones::kills::6::%uuid of player%} is not set:
+		set {milestones::kills::6::%uuid of player%} to false
+	if {milestones::kills::7::%uuid of player%} is not set:
+		set {milestones::kills::7::%uuid of player%} to false
+	if {milestones::level::1::%uuid of player%} is not set:
+		set {milestones::level::1::%uuid of player%} to false
+	if {milestones::level::2::%uuid of player%} is not set:
+		set {milestones::level::2::%uuid of player%} to false
+	if {milestones::level::3::%uuid of player%} is not set:
+		set {milestones::level::3::%uuid of player%} to false
+	if {milestones::level::4::%uuid of player%} is not set:
+		set {milestones::level::4::%uuid of player%} to false
+	if {milestones::level::5::%uuid of player%} is not set:
+		set {milestones::level::5::%uuid of player%} to false
+	if {milestones::level::6::%uuid of player%} is not set:
+		set {milestones::level::6::%uuid of player%} to false
+	if {milestones::level::7::%uuid of player%} is not set:
+		set {milestones::level::7::%uuid of player%} to false
+	if {milestones::mined::1::%uuid of player%} is not set:
+		set {milestones::mined::1::%uuid of player%} to false
+	if {milestones::mined::2::%uuid of player%} is not set:
+		set {milestones::mined::2::%uuid of player%} to false
+	if {milestones::mined::3::%uuid of player%} is not set:
+		set {milestones::mined::3::%uuid of player%} to false
+	if {milestones::mined::4::%uuid of player%} is not set:
+		set {milestones::mined::4::%uuid of player%} to false
+	if {milestones::mined::5::%uuid of player%} is not set:
+		set {milestones::mined::5::%uuid of player%} to false
+	if {milestones::mined::6::%uuid of player%} is not set:
+		set {milestones::mined::6::%uuid of player%} to false
+	if {milestones::mined::7::%uuid of player%} is not set:
+		set {milestones::mined::7::%uuid of player%} to false
+
+command /milestone:
+	aliases: milestones
+	trigger:
+		set {milestonemenu} to chest inventory with 3 rows named "&cMilestone Menu"
+		set slot (integers from 0 to 26) of {milestonemenu} to gray stained glass pane named " "
+		set slot 11 of {milestonemenu} to diamond sword named "&eKill milestones" with lore "" and "&7Earn rewards for gaining certain" and "&7amounts of kills." and "" and "&a&l» ᴄʟɪᴄᴋ ᴛᴏ ᴠɪᴇᴡ «" with all item flags
+		set slot 13 of {milestonemenu} to experience bottle named "&eLevel milestones" with lore "" and "&7Earn rewards for gaining certain" and "&7amounts of levels." and "" and "&a&l» ᴄʟɪᴄᴋ ᴛᴏ ᴠɪᴇᴡ «" with all item flags
+		set slot 15 of {milestonemenu} to diamond pickaxe named "&eMining milestones" with lore "" and "&7Earn rewards for gaining certain" and "&7amounts of blocks mined" and "" and "&a&l» ᴄʟɪᴄᴋ ᴛᴏ ᴠɪᴇᴡ «" with all item flags
+		open {milestonemenu} to player
+		
+on inventory click:
+	if name of event-inventory = "&cMilestone Menu":
+		if event-inventory = chest inventory:
+			cancel event
+			if event-slot = 11:
+				set {_killmilestones} to chest inventory with 3 rows named "&cMilestone Menu &8&l» &eKill Milestones"
+				set slot (integers from 0 to 26) of {_killmilestones} to gray stained glass pane named " "
+				set slot 10 of {_killmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c10 kills" and "" and "&6Reward:" and "&8- &c$10.00"
+				set slot 11 of {_killmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c25 kills" and "" and "&6Reward:" and "&8- &c$50.00"
+				set slot 12 of {_killmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c50 kills" and "" and "&6Reward:" and "&8- &c$100.00"
+				set slot 13 of {_killmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c150 kills" and "" and "&6Reward:" and "&8- &c$250.00"
+				set slot 14 of {_killmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c250 kills" and "" and "&6Reward:" and "&8- &c$400.00"
+				set slot 15 of {_killmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c500 kills" and "" and "&6Reward:" and "&8- &c$750.00"
+				set slot 16 of {_killmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c750 kills" and "" and "&6Reward:" and "&8- &c$1,200.00" and "&8- &c&kI&4&lKiller&c&kI &etag"
+				set slot 18 of {_killmilestones} to barrier named "&cBack"
+				set slot 26 of {_killmilestones} to player's head named "&c&lCURRENT KILLS:" with lore "" and "&cYou have %{s2kills::%player's uuid%}% kills"
+				
+				if {milestones::kills::1::%uuid of player%} = true:
+					set slot 10 of {_killmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c10 kills" and "" and "&6Reward:" and "&8- &c$10.00"
+				if {milestones::kills::2::%uuid of player%} = true:
+					set slot 11 of {_killmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c25 kills" and "" and "&6Reward:" and "&8- &c$50.00"
+				if {milestones::kills::3::%uuid of player%} = true:
+					set slot 12 of {_killmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c50 kills" and "" and "&6Reward:" and "&8- &c$100.00"
+				if {milestones::kills::4::%uuid of player%} = true:
+					set slot 13 of {_killmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c150 kills" and "" and "&6Reward:" and "&8- &c$250.00"
+				if {milestones::kills::5::%uuid of player%} = true:
+					set slot 14 of {_killmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c250 kills" and "" and "&6Reward:" and "&8- &c$400.00"
+				if {milestones::kills::6::%uuid of player%} = true:
+					set slot 15 of {_killmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c500 kills" and "" and "&6Reward:" and "&8- &c$750.00"
+				if {milestones::kills::7::%uuid of player%} = true:
+					set slot 16 of {_killmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c750 kills" and "" and "&6Reward:" and "&8- &c$1,200.00" and "&8- &c&kI&4&lKiller&c&kI &etag"
+				open {_killmilestones} to player
+				
+on inventory click:
+	if name of event-inventory = "&cMilestone Menu":
+		if event-inventory = chest inventory:
+			cancel event
+			if event-slot = 13:
+				set {_levelmilestones} to chest inventory with 3 rows named "&cMilestone Menu &8&l» &eLevel Milestones"
+				set slot (integers from 0 to 26) of {_levelmilestones} to gray stained glass pane named " "
+				set slot 10 of {_levelmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c20 levels" and "" and "&6Reward:" and "&8- &c$50.00"
+				set slot 11 of {_levelmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c30 levels" and "" and "&6Reward:" and "&8- &c$80.00"
+				set slot 12 of {_levelmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c50 levels" and "" and "&6Reward:" and "&8- &c$150.00"
+				set slot 13 of {_levelmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c100 levels" and "" and "&6Reward:" and "&8- &c$300.00"
+				set slot 14 of {_levelmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c250 levels" and "" and "&6Reward:" and "&8- &c$600.00"
+				set slot 15 of {_levelmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c400 levels" and "" and "&6Reward:" and "&8- &c$2,000.00"
+				set slot 16 of {_levelmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c500 levels" and "" and "&6Reward:" and "&8- &c$5,000.00" and "&8- &c&kI&4&lLeveller&c&kI &etag"
+				set slot 18 of {_levelmilestones} to barrier named "&cBack"
+				set slot 26 of {_levelmilestones} to player's head named "&c&lCURRENT LEVELS:" with lore "" and "&cYou have %{s2level::%player's uuid%}% levels"
+
+				if {milestones::level::1::%uuid of player%} = true:
+					set slot 10 of {_levelmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c20 levels" and "" and "&6Reward:" and "&8- &c$50.00"
+				if {milestones::level::2::%uuid of player%} = true:
+					set slot 11 of {_levelmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c30 levels" and "" and "&6Reward:" and "&8- &c$80.00"
+				if {milestones::level::3::%uuid of player%} = true:
+					set slot 12 of {_levelmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c50 levels" and "" and "&6Reward:" and "&8- &c$150.00"
+				if {milestones::level::4::%uuid of player%} = true:
+					set slot 13 of {_levelmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c100 levels" and "" and "&6Reward:" and "&8- &c$300.00"
+				if {milestones::level::5::%uuid of player%} = true:
+					set slot 14 of {_levelmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c250 levels" and "" and "&6Reward:" and "&8- &c$600.00"
+				if {milestones::level::6::%uuid of player%} = true:
+					set slot 15 of {_levelmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c400 levels" and "" and "&6Reward:" and "&8- &c$2,000.00"
+				if {milestones::level::7::%uuid of player%} = true:
+					set slot 16 of {_levelmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c500 levels" and "" and "&6Reward:" and "&8- &c$5,000.00" and "&8- &c&kI&4&lLeveller&c&kI &etag"
+				open {_levelmilestones} to player
+				
+on inventory click:
+	if name of event-inventory = "&cMilestone Menu":
+		if event-inventory = chest inventory:
+			cancel event
+			if event-slot = 15:
+				set {_miningmilestones} to chest inventory with 3 rows named "&cMilestone Menu &8&l» &eMining Milestones"
+				set slot (integers from 0 to 26) of {_miningmilestones} to gray stained glass pane named " "
+				set slot 10 of {_miningmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c2,500 mined" and "" and "&6Reward:" and "&8- &c$25.00"
+				set slot 11 of {_miningmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c5,000 mined" and "" and "&6Reward:" and "&8- &c$50.00"
+				set slot 12 of {_miningmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c10,000 mined" and "" and "&6Reward:" and "&8- &c$250.00"
+				set slot 13 of {_miningmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c50,000 mined" and "" and "&6Reward:" and "&8- &c$1,000.00"
+				set slot 14 of {_miningmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c100,000 mined" and "" and "&6Reward:" and "&8- &c$2,500.00"
+				set slot 15 of {_miningmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c300,000 mined" and "" and "&6Reward:" and "&8- &c$5,000.00"
+				set slot 16 of {_miningmilestones} to red stained glass pane named "&c&lLOCKED" with lore "" and "&6Requirements:" and "&8- &c500,000 mined" and "" and "&6Reward:" and "&8- &c$7,500.00" and "&8- &c&kI&4&lBlocky&c&kI &etag"
+				set slot 18 of {_miningmilestones} to barrier named "&cBack"
+				set slot 26 of {_miningmilestones} to player's head named "&c&lCURRENT BLOCKS MINED:" with lore "" and "&cYou have %format({s2mined::%player's uuid%})% blocks mined"
+
+				if {milestones::mined::1::%uuid of player%} = true:
+					set slot 10 of {_miningmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c2,500 mined" and "" and "&6Reward:" and "&8- &c$25.00"
+				if {milestones::mined::2::%uuid of player%} = true:
+					set slot 11 of {_miningmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c5,000 mined" and "" and "&6Reward:" and "&8- &c$50.00"
+				if {milestones::mined::3::%uuid of player%} = true:
+					set slot 12 of {_miningmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c10,000 mined" and "" and "&6Reward:" and "&8- &c$250.00"
+				if {milestones::mined::4::%uuid of player%} = true:
+					set slot 13 of {_miningmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c50,000 mined" and "" and "&6Reward:" and "&8- &c$1,000.00"
+				if {milestones::mined::5::%uuid of player%} = true:
+					set slot 14 of {_miningmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c100,000 mined" and "" and "&6Reward:" and "&8- &c$2,500.00"
+				if {milestones::mined::6::%uuid of player%} = true:
+					set slot 15 of {_miningmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c300,000 mined" and "" and "&6Reward:" and "&8- &c$5,000.00"
+				if {milestones::mined::7::%uuid of player%} = true:
+					set slot 16 of {_miningmilestones} to lime stained glass pane named "&a&lCLAIMED" with lore "" and "&6Requirements:" and "&8- &c500,000 mined" and "" and "&6Reward:" and "&8- &c$7,500.00" and "&8- &c&kI&4&lBlocky&c&kI &ctag"
+				open {_miningmilestones} to player
+				
+on inventory click:
+	if name of event-inventory = "&cMilestone Menu &8&l» &eKill Milestones":
+		if event-inventory is chest inventory:
+			cancel event
+			if event-slot = 10:
+				if {milestones::kills::1::%uuid of player%} = false:
+					if {s2kills::%player's uuid%} >= 10:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Kill milestone ##1&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::kills::1::%uuid of player%} to true
+						add 10 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough kills for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 11:
+				if {milestones::kills::2::%uuid of player%} = false:
+					if {s2kills::%player's uuid%} >= 25:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Kill milestone ##2&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::kills::2::%uuid of player%} to true
+						add 50 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough kills for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 12:
+				if {milestones::kills::3::%uuid of player%} = false:
+					if {s2kills::%player's uuid%} >= 50:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Kill milestone ##3&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::kills::3::%uuid of player%} to true
+						add 100 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough kills for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 13:
+				if {milestones::kills::4::%uuid of player%} = false:
+					if {s2kills::%player's uuid%} >= 150:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Kill milestone ##4&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::kills::4::%uuid of player%} to true
+						add 250 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough kills for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 14:
+				if {milestones::kills::5::%uuid of player%} = false:
+					if {s2kills::%player's uuid%} >= 250:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Kill milestone ##5&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::kills::5::%uuid of player%} to true
+						add 400 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough kills for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 15:
+				if {milestones::kills::6::%uuid of player%} = false:
+					if {s2kills::%player's uuid%} >= 500:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Kill milestone ##6&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::kills::6::%uuid of player%} to true
+						add 750 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough kills for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 16:
+				if {milestones::kills::7::%uuid of player%} = false:
+					if {s2kills::%player's uuid%} >= 750:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Kill milestone ##7&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::kills::7::%uuid of player%} to true
+						set {tag::kills::%uuid of player%} to true
+						add 1200 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough kills for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+					
+on inventory click:
+	if name of event-inventory = "&cMilestone Menu &8&l» &eLevel Milestones":
+		if event-inventory is chest inventory:
+			cancel event
+			if event-slot = 10:
+				if {milestones::level::1::%uuid of player%} = false:
+					if {s2level::%player's uuid%} >= 20:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Level milestone ##1&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::level::1::%uuid of player%} to true
+						add 50 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough levels for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 11:
+				if {milestones::level::2::%uuid of player%} = false:
+					if {s2level::%player's uuid%} >= 30:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Level milestone ##2&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::level::2::%uuid of player%} to true
+						add 80 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough levels for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 12:
+				if {milestones::level::3::%uuid of player%} = false:
+					if {s2level::%player's uuid%} >= 50:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Level milestone ##3&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::level::3::%uuid of player%} to true
+						add 150 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough levels for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 13:
+				if {milestones::level::4::%uuid of player%} = false:
+					if {s2level::%player's uuid%} >= 100:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Level milestone ##4&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::level::4::%uuid of player%} to true
+						add 300 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough levels for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 14:
+				if {milestones::level::5::%uuid of player%} = false:
+					if {s2level::%player's uuid%} >= 250:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Level milestone ##5&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::level::5::%uuid of player%} to true
+						add 600 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough levels for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 15:
+				if {milestones::level::6::%uuid of player%} = false:
+					if {s2level::%player's uuid%} >= 400:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Level milestone ##6&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::level::6::%uuid of player%} to true
+						add 2000 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough levels for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 16:
+				if {milestones::level::7::%uuid of player%} = false:
+					if {s2level::%player's uuid%} >= 500:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Level milestone ##7&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::level::7::%uuid of player%} to true
+						set {tag::level::%uuid of player%} to true
+						add 5000 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough levels for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+					
+on inventory click:
+	if name of event-inventory = "&cMilestone Menu &8&l» &eMining Milestones":
+		if event-inventory is chest inventory:
+			cancel event
+			if event-slot = 10:
+				if {milestones::mined::1::%uuid of player%} = false:
+					if {s2mined::%player's uuid%} >= 2500:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Mining milestone ##1&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::mined::1::%uuid of player%} to true
+						add 25 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough blocks mined for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 11:
+				if {milestones::mined::2::%uuid of player%} = false:
+					if {s2mined::%player's uuid%} >= 5000:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Mining milestone ##2&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::mined::2::%uuid of player%} to true
+						add 50 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough blocks mined for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 12:
+				if {milestones::mined::3::%uuid of player%} = false:
+					if {s2mined::%player's uuid%} >= 10000:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Mining milestone ##3&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::mined::3::%uuid of player%} to true
+						add 250 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough blocks mined for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 13:
+				if {milestones::mined::4::%uuid of player%} = false:
+					if {s2mined::%player's uuid%} >= 50000:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Mining milestone ##4&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::mined::4::%uuid of player%} to true
+						add 1000 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough blocks mined for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 14:
+				if {milestones::mined::5::%uuid of player%} = false:
+					if {s2mined::%player's uuid%} >= 100000:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Mining milestone ##5&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::mined::5::%uuid of player%} to true
+						add 2500 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough blocks mined for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 15:
+				if {milestones::mined::6::%uuid of player%} = false:
+					if {s2mined::%player's uuid%} >= 300000:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Mining milestone ##6&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::mined::6::%uuid of player%} to true
+						add 5000 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough blocks mined for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player
+			else if event-slot = 16:
+				if {milestones::mined::7::%uuid of player%} = false:
+					if {s2mined::%player's uuid%} >= 500000:
+						close player's inventory
+						send action bar "&eMilestones &8| &aSuccessfully claimed &2Mining milestone ##7&a!" to player
+						play sound "ui.toast.challenge_complete" with volume 0.2 at the player
+						set {milestones::mined::7::%uuid of player%} to true
+						set {tag::mined::%uuid of player%} to true
+						add 7500 to {s2money::%player's uuid%}
+					else:
+						send action bar "&eMilestones &8| &cYou do not have enough blocks mined for this milestone!" to player
+						play sound "block.note_block.bass" with volume 0.5 at the player
+				else:
+					send action bar "&eMilestones &8| &cYou have already claimed this milestone!" to player
+					play sound "block.note_block.bass" with volume 0.5 at the player

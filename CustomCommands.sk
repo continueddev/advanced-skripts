@@ -1,0 +1,115 @@
+
+options:
+    prefix: &aServerName &8|
+    servername: &aServerName
+    discord: https://discord.com/
+    store: https://store.example.net/
+    permissions: {@prefix} &4You do not have permission to execute this command!
+
+
+on command:
+	if command is "plugins" or "pl" or "version" or "ver" or "?" or "about" or "bukkit:plugins" or "bukkit:pl" or "bukkit:version" or "bukkit:ver" or "bukkit:?" or "bukkit:about" or "bukkit:help":
+		cancel event
+		send "Plugins (1): &aServerNameCore"
+		
+on tab complete of "plugins" or "pl" or "version" or "ver" or "?" or "about" or "bukkit:plugins" or "bukkit:pl" or "bukkit:version" or "bukkit:ver" or "bukkit:?" or "bukkit:about" or "bukkit:help":
+	clear tab completions
+
+command /discord:
+	trigger:
+		play sound "entity.experience_orb.pickup" to player
+		send " " to player
+		send " " to player
+		send "        <link:{@discord}>{@servername}&r &fDiscord Server" to player
+		send "           <tooltip:&6Click to open the &b{@discord}><link:{@discord}><##00B8F8>&n{@discord}" to player
+		send " " to player
+		send " " to player
+
+command /store:
+	trigger:
+		play sound "entity.experience_orb.pickup" to player
+		send " " to player
+		send " " to player
+		send "        <link:{@store}>{@servername}&r &fServer Store" to player
+		send "           <tooltip:&6Click to open the &aStore><link:{@store}><##00FFD6>&n{@store}" to player
+		send " " to player
+		send " " to player
+
+command /help:
+	trigger:
+		send "{@servername}&r • &3Help Page" to player
+		send " " to player
+		send "&f/store &8| &7To see our Store Page" to player
+		send "&f/discord &8| &7To see our Discord Page" to player
+		send "&f/info &8| &7To see our Info Page" to player
+		send "&f/rules &8| &7To see our Rules Page" to player
+		send " " to player
+
+command /info:
+	trigger:
+		send "{@servername}&r • &3Info" to player
+		send " "
+		send "Do /help to see our commands" to player
+		send " " to player
+		send " " to player
+		send " " to player
+		send " " to player
+		send " " to player
+		send " " to player
+		send " " to player
+		
+command /rules:
+	trigger:
+		send "{@servername}&r • &aRules Page" to player
+		send " "
+		send "1: &4Don't spam in chat" to player
+		send "2: &4Don't swear in chat" to player
+		send "4: &4Don't abusing caps!" to player
+		send "5: &4No DDOS Threats" to player
+		send "6: &4No Hacking" to player
+		send "7: &4No Cheating" to player
+		send "8: &4Don't dupe" to player
+		send " " to player
+
+
+command /clearchat:
+	permission: clearchat.use
+	permission message: {@permissions}
+	trigger:
+		loop 200 times:
+			broadcast "&r"
+		broadcast "&aChat cleared by &e%sender%"
+
+
+command /freeze [<player>]:
+    permission: freeze.use
+    permission message: {@permissions}
+    trigger:
+        if arg-1 is set:
+            if {freeze::%arg-1%} is set:
+                send "{@prefix} &4This Player is already freezed"
+            else:
+                set arg-1's walk speed to 0
+                set {freeze::%arg-1%} to true
+                send "{@prefix} &a%arg-1% &7Freeze Successfull"
+                send "{@prefix} &4You Can't move or jump until Admin Unfreeze you" to arg-1
+        else:
+            send "{@prefix} &7Need to add online player!"
+
+command /unfreeze [<player>]:
+    permission: freeze.use
+    permission message: {@permissions}
+    trigger:
+        if arg-1 is set:
+            if {freeze::%arg-1%} is true:
+                reset arg-1's walk speed
+                send "{@prefix} &a%arg-1% &7Unfreeze Successfull"
+                send "{@prefix} &aNow You Can Move and Jump" to arg-1
+                delete {freeze::%arg-1%}
+            else:
+                send "{@prefix} &7This player is not freezed."
+
+on jump:
+    if {freeze::%player%} is set:
+        cancel event
+        send "{@prefix} &4You are freezed and cannot jump!" to player

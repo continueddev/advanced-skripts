@@ -1,0 +1,45 @@
+command /setxp <player> <number>:
+	permission: xp.add
+	permission message: &fUnknown command.
+	trigger:
+		set {xp::%arg-1's uuid%} to arg-2
+
+function level(p: player):
+    add 1 to {s2mined::%{_p}'s uuid%}
+    add 0.01 to {s2money::%{_p}'s uuid%}
+    add 1 to {s2xp::%{_p}'s uuid%}
+    set level progress of {_p} to ({s2xp::%{_p}'s uuid%} / {s2xprequired::%{_p}'s uuid%})
+    if {s2xp::%{_p}'s uuid%} >= {s2xprequired::%{_p}'s uuid%}:
+        set {_oldlevel} to {s2level::%{_p}'s uuid%}
+        add 1 to {s2level::%{_p}'s uuid%}
+        add 100 to {s2xprequired::%{_p}'s uuid%}
+        set {s2xp::%{_p}'s uuid%} to 0
+        set the level of {_p} to {s2level::%{_p}'s uuid%}
+        set level progress of {_p} to 0
+        send title "&2&l&kMMM &aʟᴇᴠᴇʟ ᴜᴘ! &2&l&kMMM" to {_p}
+        send subtitle "&aʟᴇᴠᴇʟ %{_oldlevel}% &2» %{s2level::%{_p}'s uuid%}%" to {_p}
+        play sound "ui.toast.challenge_complete" with volume 0.2 to {_p}
+		
+		
+on block break:
+	if player doesn't have enough space for 1 of event-item:
+		send action bar "&cInvolvin&eDev &8| &cInventory full!" to player
+		play sound "item.shield.break" with volume 0.2 at the player
+		
+on join:
+	if {s2xprequired::%player's uuid%} is not set:
+		set {s2xprequired::%player's uuid%} to 100
+		
+on join:
+	if {s2level::%player's uuid%} is not set:
+		set {s2level::%player's uuid%} to 1
+		
+command /setxprequire <player> <integer>:
+	permission: reuqirexp.add
+	permission message: &fUnknown command.
+	trigger:
+		set {s2xprequired::%arg-1's uuid%} to arg-2
+		
+on craft:
+	if player is not op:
+		cancel event

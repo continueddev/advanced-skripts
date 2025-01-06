@@ -1,0 +1,36 @@
+options:
+    sc_prefix: &7[&bStaffChat&7]&r
+
+on join:
+    set {staffchat_mode::%player's uuid%} to false
+
+command /staffchathelp:
+    aliases: /schelp
+    permission: staffchat.use
+    trigger:
+        send "&9&lStaff Chat Info:"
+        send "&7- &bVersion: &a1.0"
+        send "&7- &bTo send a quick staff chat message: &a/sc <message>"
+        send "&7- &bUse /sc to toggle staff chat mode."
+
+command /staffchat [<text>]:
+    aliases: /sc
+    permission: staffchat.use
+    permission message: &cYou don't have permission to use Staff Chat!
+    trigger:
+        if arg-1 is set:
+            loop all players where [input has permission "staffchat.use"]:
+                send "{@sc_prefix} &a%player's name%&r: &f%arg-1%" to loop-player
+        else:
+            if {staffchat_mode::%player's uuid%} is false:
+                set {staffchat_mode::%player's uuid%} to true
+                send "{@sc_prefix} &aStaff chat mode activated!" to player
+            else:
+                set {staffchat_mode::%player's uuid%} to false
+                send "{@sc_prefix} &cStaff chat mode deactivated!" to player
+
+on chat:
+    if {staffchat_mode::%player's uuid%} is true:
+        cancel event
+        loop all players where [input has permission "staffchat.use"]:
+            send "{@sc_prefix} &a%player's name%&r: &f%message%" to loop-player
