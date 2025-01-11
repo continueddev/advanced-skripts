@@ -1,0 +1,361 @@
+#------------------------#
+# Skript by: CinturonCris #
+# Version: 0.7            #
+#------------------------#
+
+options:
+  gui permission: "staff.punish"
+  unmute permission: "staff.punish"
+  gui permission message: "&cYou do not have the required permission to use this!"
+  unmute permission message: "&cYou do not have the required permission to use this!"
+  unban permission: "staff.punish"
+  unban permission message: "&cYou do not have the required permission to use this!"
+
+command /punish [<offlineplayer>] [<text>] ["<text>"] [<text>]:
+  permission: "{@gui permission}"
+  permission message: "{@gui permission message}" 
+  trigger:
+    if arg-1 is set:
+      if executor is console:
+        send "&cOnly players can use this command!"
+        stop
+      else:
+        if arg-2 is not set:
+          set {_punishgui} to a new chest inventory with 5 rows named "&6&lPUNISH"
+          loop all integers between 0 and 44:
+            set slot loop-value of {_punishgui} to gray stained glass pane named "&1"
+          set slot 10 of {_punishgui} to green wool named "&a&lWARN"
+          set slot 13 of {_punishgui} to orange wool named "&6&lMUTE"
+          set slot 16 of {_punishgui} to red wool named "&c&lBAN"
+          set slot 31 of {_punishgui} to book named "&b&lHISTORY"
+          open {_punishgui} to player
+          set {target.%player%} to "%arg-1%"
+          stop
+        else:
+          send "&cThat player is currently offline!"
+    else:
+      send "&cUsage: /punish <player>"
+
+command /mute [<offlineplayer>] ["<text>"] <text>:
+  permission: "{@gui permission}"
+  permission message: "{@gui permission message}"
+  trigger:
+    if arg-1 is set:
+      if arg-2 is set:
+        if {muted.%arg-1%} is not set:
+          set {muted.%arg-1%} to "muted"
+          broadcast "&e%executor% &6muted &e%arg-1% &6because of ""&e%arg-2%&6"" for &e%arg-3%&6!"
+          add "&e&lMUTE %newline% &6By: &e%executor% %newline% &6Reason: &e%arg-2% %newline% &6Duration: &e%arg-3%&6." to {history::%arg-1%::*}
+          wait arg-3 parsed as timespan
+          delete {muted.%arg-1%}
+          send "&aYou have been unmuted. Please follow the rules next time!" to arg-1
+          stop
+        else:
+          send "&cThis player is already muted!"
+      else:
+        send "&cUsage: /mute <player> ""<reason>"" <duration>"
+    else:
+      send "&cUsage: /mute <player> ""<reason>"" <duration>"
+
+command /warn [<offlineplayer>] "<text>":
+	permission: {@gui permission}
+	permission message: {@gui permission message}
+	trigger:
+		if arg-1 is set:
+			if arg-2 is set:
+				if {warns.%arg-1%} is not 2:
+					add 1 to {warns.%arg-1%}
+					broadcast "&e%executor% &6warned (&e##%{warns.%arg-1%}%&6) &e%arg-1% &6because of ""&e%arg-2%&6""!"
+					add "&e&lWARN %newline% &6By: &e%executor% %newline% &6Reason: &e%arg-2% %newline% &6Warn: &e%{warns.%arg-1%}%" to {history::%arg-1%::*}
+				else:
+					set {banned.%arg-1%} to "&4Final Warning: %arg-2%"
+					broadcast "&e%executor% &6banned &e%arg-1% &6because of ""&eFinal Warning: %arg-2%&6"" for &e1 day&6!"
+					ban arg-1 because "&4Final Warning: %arg-2%" for 1 day
+					kick arg-1 because "&cYou're banned from this server. %newline% %newline% &cReason: &4Final Warning: %arg-2% %newline% %newline% &cDuration: &41 day&c!"
+					add "&e&lBAN %newline% &6By: &e%executor% %newline% &6Reason: &eFinal Warning: %arg-2% %newline% &6Duration: &e1 day&6." to {history::%arg-1%::*}
+					set {banned.%player%} to arg-2
+					delete {warns.%arg-1%}
+			else:
+				send "&cUsage: /warn <player> ""<reason>"""
+		else:
+			send "&cUsage: /warn <player> ""<reason>"""
+
+
+command /unmute [<offlineplayer>] ["<text>"]:
+	permission: {@unmute permission}
+	permission message: {@unmute permission message}
+	trigger:
+		if arg-1 is online:
+			if arg-2 is set:
+				if {muted.%arg-1%} is set:
+					delete {muted.%arg-1%}
+					broadcast "&e%executor% &6unmuted &e%arg-1% &6because of ""&e%arg-2%&6""."
+					add "&a&lUNMUTE %newline% &2By: &a%executor% %newline% &2Reason: &a%arg-2% %newline%" to {history::%arg-1%::*}
+				else:
+					send "&cThis player isn't muted!"
+			else:
+				if {muted.%arg-1%} is set:
+					delete {muted.%arg-1%}
+					broadcast "&e%executor% &6unmuted &e%arg-1%&6."
+					add "&a&lUNMUTE %newline% &2By: &a%executor%" to {history::%arg-1%::*}
+				else:
+					send "&cThis player isn't muted!"
+		else:
+			send "&cUsage: /unmute <player> [""<reason>""]"
+            
+command /ban [<offlineplayer>] ["<text>"] <text>:
+	permission: {@gui permission}
+	permission message: {@gui permission message}
+	trigger:
+		if arg-1 is set:
+			if arg-2 is set:
+				if arg-1 is not banned:
+					broadcast "&e%executor% &6banned &e%arg-1% &6because of ""&e%arg-2%&6"" for &e%arg-3%&6!"
+					ban arg-1 because "&4%arg-2%" for arg-3 parsed as time span
+					kick arg-1 because "&cYou're banned from this server. %newline% %newline% &cReason: &4%arg-2% %newline% %newline% &cDuration: &4%arg-3%&c!"
+					add "&e&lBAN %newline% &6By: &e%executor% %newline% &6Reason: &e%arg-2% %newline% &6Duration: &e%arg-3%&6." to {history::%arg-1%::*}
+					set {banned.%player%} to arg-2
+					stop
+				else:
+					send "&cThis player is already banned!"
+			else:
+				send "&cUsage: /ban <player> ""<reason>"" <duration>"
+		else:
+			send "&cUsage: /ban <player> ""<reason>"" <duration>"
+
+command /unban [<offlineplayer>] ["<text>"] [<text>]:
+	permission: {@unban permission}
+	permission message: {@unban permission message}
+	trigger:
+		if arg-1 is set:
+			if arg-2 is set:
+				if arg-1 is banned:
+					unban arg-1
+					broadcast "&e%executor% &6unbanned &e%arg-1% &6because of ""&e%arg-2%&6""."
+					add "&a&lUNBAN %newline% &2By: &a%executor% %newline% &2Reason: &a%arg-2%" to {history::%arg-1%::*}
+				else:
+					send "&cThis player is not banned!"
+			else:
+				if arg-1 is banned:
+					unban arg-1
+					broadcast "&e%executor% &6unbanned &e%arg-1%&6."
+					add "&a&lUNBAN %newline% &2By: &a%executor%" to {history::%arg-1%::*}
+				else:
+					send "&cThis player is not banned!"
+		else:
+			send "&cUsage: /unban <player> [""<reason>""]"
+    
+		
+on inventory click:
+	if name of event-inventory contains "&6&lPUNISH", "&6&lMUTE", "&c&lBAN", "&b&lHISTORY" or "&a&lWARN":
+		cancel event
+		if event-slot is orange wool named "&6&lMUTE":
+			set {close.%player%} to "yes"
+			set {_mutegui} to a new chest inventory with 5 rows named "&6&lMUTE &6> DURATION"
+			loop all integers between 0 and 46:
+				set slot loop-value of {_mutegui} to gray stained glass pane named "&1"
+			set slot 10 of {_mutegui} to red wool named "&c&l10 MINUTES"
+			set slot 12 of {_mutegui} to red wool named "&c&l20 MINUTES"
+			set slot 14 of {_mutegui} to red wool named "&c&l1 HOUR"
+			set slot 16 of {_mutegui} to red wool named "&c&l1 DAY"
+			set slot 28 of {_mutegui} to red wool named "&c&l1 WEEK"
+			set slot 30 of {_mutegui} to red wool named "&c&l1 MONTH"
+			set slot 32 of {_mutegui} to red wool named "&c&l1 YEAR"
+			set slot 34 of {_mutegui} to red wool named "&c&lPERMANENT"
+			open {_mutegui} to player
+			wait 1 tick
+			delete {close.%player%}
+		if event-slot is red wool:
+			if name of event-inventory is "&6&lMUTE &6> DURATION":
+				set {duration.%player%} to name of event-slot
+				replace "&c&l" with "" in {duration.%player%}
+				set {close.%player%} to "yes"
+				set {_mutegui} to a new chest inventory with 5 rows named "&6&lMUTE &6> DURATION > REASON"
+				loop all integers between 0 and 46:
+					set slot loop-value of {_mutegui} to gray stained glass pane named "&1"
+				set slot 10 of {_mutegui} to red wool named "&c&lHACKING"
+				set slot 12 of {_mutegui} to red wool named "&c&lSPAMMING"
+				set slot 14 of {_mutegui} to red wool named "&c&lDISRESPECT"
+				set slot 16 of {_mutegui} to red wool named "&c&lRACIAL SLURS"
+				set slot 28 of {_mutegui} to red wool named "&c&lDDOS THREADS"
+				set slot 30 of {_mutegui} to red wool named "&c&lPERSONAL INFORMATION"
+				set slot 32 of {_mutegui} to red wool named "&c&lGRIEFING"
+				set slot 34 of {_mutegui} to red wool named "&c&lSTEALING"
+				open {_mutegui} to player
+				wait 1 tick
+				delete {close.%player%}
+		if event-slot is red wool:
+			if name of event-inventory is "&6&lMUTE &6> DURATION > REASON":
+				set {reason.%player%} to name of event-slot
+				replace "&c&l" with "" in {reason.%player%}
+				set {close.%player%} to "yes"
+				set {_mutegui} to a new chest inventory with 5 rows named "&6&lMUTE &6> ... > CONFIRM"
+				loop all integers between 0 and 46:
+					set slot loop-value of {_mutegui} to gray stained glass pane named "&1"
+				set slot 19 of {_mutegui} to green wool named "&a&lCONFIRM"
+				set slot 22 of {_mutegui} to paper named "&6Are you sure you want to punish?"
+				set slot 25 of {_mutegui} to red wool named "&c&lCANCEL"
+				open {_mutegui} to player
+				wait 1 tick
+				delete {close.%player%}
+				
+				
+				
+				
+		if event-slot is red wool named "&c&lBAN":
+			set {close.%player%} to "yes"
+			set {_mutegui} to a new chest inventory with 5 rows named "&c&lBAN &c> DURATION"
+			loop all integers between 0 and 46:
+				set slot loop-value of {_mutegui} to gray stained glass pane named "&1"
+			set slot 10 of {_mutegui} to red wool named "&c&l10 MINUTES"
+			set slot 12 of {_mutegui} to red wool named "&c&l20 MINUTES"
+			set slot 14 of {_mutegui} to red wool named "&c&l1 HOUR"
+			set slot 16 of {_mutegui} to red wool named "&c&l1 DAY"
+			set slot 28 of {_mutegui} to red wool named "&c&l1 WEEK"
+			set slot 30 of {_mutegui} to red wool named "&c&l1 MONTH"
+			set slot 32 of {_mutegui} to red wool named "&c&l1 YEAR"
+			set slot 34 of {_mutegui} to red wool named "&c&lBLACKLIST"
+			open {_mutegui} to player
+			wait 1 tick
+			delete {close.%player%}
+		if event-slot is red wool:
+			if name of event-inventory is "&c&lBAN &c> DURATION":
+				set {duration.%player%} to name of event-slot
+				replace "&c&l" with "" in {duration.%player%}
+				set {close.%player%} to "yes"
+				set {_mutegui} to a new chest inventory with 5 rows named "&c&lBAN &c> DURATION > REASON"
+				loop all integers between 0 and 46:
+					set slot loop-value of {_mutegui} to gray stained glass pane named "&1"
+				set slot 10 of {_mutegui} to red wool named "&c&lHACKING"
+				set slot 12 of {_mutegui} to red wool named "&c&lSPAMMING"
+				set slot 14 of {_mutegui} to red wool named "&c&lDISRESPECT"
+				set slot 16 of {_mutegui} to red wool named "&c&lRACIAL SLURS"
+				set slot 28 of {_mutegui} to red wool named "&c&lDDOS THREADS"
+				set slot 30 of {_mutegui} to red wool named "&c&lPERSONAL INFORMATION"
+				set slot 32 of {_mutegui} to red wool named "&c&lGRIEFING"
+				set slot 34 of {_mutegui} to red wool named "&c&lSTEALING"
+				open {_mutegui} to player
+				wait 1 tick
+				delete {close.%player%}
+
+		if event-slot is red wool:
+			if name of event-inventory is "&c&lBAN &c> DURATION > REASON":
+				set {reason.%player%} to name of event-slot
+				replace "&c&l" with "" in {reason.%player%}
+				set {close.%player%} to "yes"
+				set {_mutegui} to a new chest inventory with 5 rows named "&c&lBAN &c> ... > CONFIRM"
+				loop all integers between 0 and 46:
+					set slot loop-value of {_mutegui} to gray stained glass pane named "&1"
+				set slot 19 of {_mutegui} to green wool named "&a&lCONFIRM"
+				set slot 22 of {_mutegui} to paper named "&6Are you sure you want to punish?"
+				set slot 25 of {_mutegui} to red wool named "&c&lCANCEL"
+				open {_mutegui} to player
+				wait 1 tick
+				delete {close.%player%}
+
+		if event-slot is green wool named "&a&lWARN":
+			set {close.%player%} to "yes"
+			set {_warngui} to a new chest inventory with 5 rows named "&a&lWARN &a> REASON"
+			loop all integers between 0 and 46:
+				set slot loop-value of {_warngui} to gray stained glass pane named "&1"
+			set slot 10 of {_warngui} to red wool named "&c&lHACKING"
+			set slot 12 of {_warngui} to red wool named "&c&lSPAMMING"
+			set slot 14 of {_warngui} to red wool named "&c&lDISRESPECT"
+			set slot 16 of {_warngui} to red wool named "&c&lRACIAL SLURS"
+			set slot 28 of {_warngui} to red wool named "&c&lDDOS THREADS"
+			set slot 30 of {_warngui} to red wool named "&c&lPERSONAL INFORMATION"
+			set slot 32 of {_warngui} to red wool named "&c&lGRIEFING"
+			set slot 34 of {_warngui} to red wool named "&c&lSTEALING"
+			open {_warngui} to player
+			wait 1 tick
+			delete {close.%player%}
+		if event-slot is red wool:
+			if name of event-inventory is "&a&lWARN &a> REASON":
+				set {reason.%player%} to name of event-slot
+				replace "&c&l" with "" in {reason.%player%}
+				set {close.%player%} to "yes"
+				set {_warngui} to a new chest inventory with 5 rows named "&a&lWARN &a> ... > CONFIRM"
+				loop all integers between 0 and 46:
+					set slot loop-value of {_warngui} to gray stained glass pane named "&1"
+				set slot 19 of {_warngui} to green wool named "&a&lCONFIRM"
+				set slot 22 of {_warngui} to paper named "&6Are you sure you want to punish?"
+				set slot 25 of {_warngui} to red wool named "&c&lCANCEL"
+				open {_warngui} to player
+				wait 1 tick
+				delete {close.%player%}
+
+		if event-slot is book named "&b&lHISTORY":
+			set {_historygui.%player's uuid%.1} to a new chest inventory with 5 rows named "&b&lHISTORY &b> %{target.%player%}%"
+			set {_currentlyloading} to 1
+			loop all integers between 0 and 44:
+				if loop-value is not 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33 or 34:
+					set slot loop-value of {_historygui.%player's uuid%.%{_currentlyloading}%} to gray stained glass pane named "&1"
+			set {_slot} to 9
+			if {history::%{target.%player%}%::*} is not set:
+				set slot 22 of {_historygui.%player's uuid%.%{_currentlyloading}%} to barrier named "&c&lNO HISTORY FOUND!"
+				open {_historygui.%player's uuid%.%{_currentlyloading}%} to player
+				stop
+			else:
+				loop {history::%{target.%player%}%::*}:
+					if {_slot} is greater than 29:
+						add 1 to {_currentlyloading}
+						set {_historygui.%player's uuid%.%{_currentlyloading}%} to a new chest inventory with 5 rows named "&b&lHISTORY &b> %{target.%player%}%"
+						loop all integers between 0 and 44:
+							if loop-value-1 is not 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33 or 34:
+								set slot loop-value-1 of {_historygui.%player's uuid%.%{_currentlyloading}%} to gray stained glass pane named "&1"
+					while slot {_slot} of {_historygui.%player's uuid%.%{_currentlyloading}%} is not air:
+						add 1 to {_slot}
+					set slot {_slot} of {_historygui.%player's uuid%.%{_currentlyloading}%} to paper named "&1" with lore loop-value and ""
+					set slot 40 of {_historygui.%player's uuid%.%{_currentlyloading}%} to red wool named "&c&lCLEAR ALL HISTORY"
+					add 1 to {_slot}
+			open {_historygui.%player's uuid%.%{_currentlyloading}%} to player
+
+
+		if event-slot is red wool named "&c&lCLEAR ALL HISTORY":
+			delete {history::%{target.%player%}%::*}
+			close player's inventory
+			send "&aSuccesfully cleared the punish history of %{target.%player%}%!"
+
+		if event-slot is green wool named "&a&lCONFIRM":
+			if name of event-inventory contains "&a&lWARN":
+				execute player command "warn %{target.%player%}% ""%lower case {reason.%player%}%"""
+			if name of event-inventory contains "&6&lMUTE":
+				execute player command "mute %{target.%player%}% ""%lower case {reason.%player%}%"" %lower case {duration.%player%}%"
+			if name of event-inventory contains "&c&lBAN":
+				execute player command "ban %{target.%player%}% ""%lower case {reason.%player%}%"" %lower case {duration.%player%}%"
+			set {close.%player%} to "yes"
+			close player's inventory
+			wait 1 tick
+			delete {close.%player%}
+			delete {target.%player%}
+			delete {duration.%player%}
+			delete {reason.%player%}
+		if event-slot is red wool named "&c&lCANCEL":
+			close player's inventory
+			
+on inventory close:
+	if name of event-inventory contains "&6&lMUTE", "&c&lBAN" or "&a&lWARN":
+		{close.%player%} is not set
+		send "&cPunishment cancelled."
+		delete {target.%player%}
+		delete {duration.%player%}
+		delete {reason.%player%}
+
+on join:
+	if player is banned:
+		kick player because {banned.%player%}
+		loop all players:
+			if loop-player has permission "punish.staff":
+				send "&4%player% &ctried to join but is currently &4banned&c!" to loop-player
+		send "&4%player% &ctried to join but is currently &4banned&c!" to console
+		
+on chat:
+	if {muted.%player%} is set:
+		cancel event
+		send "&cYou are currently muted!"
+		loop all players:
+			if loop-player has permission "punish.staff":
+				send "&4%player% &ctried so speak but is currently &4muted&c!" to loop-player
+			send "&4%player% &ctried so speak but is currently &4muted&c!" to console
+			
+#
